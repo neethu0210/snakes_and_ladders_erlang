@@ -1,7 +1,9 @@
 -module(snl).
 -export([main/0]).
 
--record(query_entry, {v, dist}).
+-record(query_entry, {v :: pos_integer(), dist :: non_neg_integer()}).
+
+-spec main() -> ok.
 
 main() ->
     N = 100,
@@ -10,6 +12,8 @@ main() ->
     Moves = generate_moves(N, Ladders, Snakes),
     MinThrows = get_min_dice_throws(Moves),
     io:format("Minimum dice throws required is: ~p~n", [MinThrows]).
+
+-spec generate_moves(pos_integer(), [{pos_integer(), pos_integer()}], [{pos_integer(), pos_integer()}]) -> list(integer()).
 
 generate_moves(N, Ladders, Snakes) ->
     Moves = lists:duplicate(N, -1),
@@ -22,9 +26,13 @@ generate_moves(N, Ladders, Snakes) ->
         MovesWithLadders, Snakes
     ).
 
+-spec update_list(list(integer()), pos_integer(), pos_integer()) -> list(integer()).
+
 update_list(List, Index, Value) ->
     {Left, [_|Right]} = lists:split(Index, List),
     Left ++ [Value] ++ Right.
+
+-spec get_min_dice_throws(list(integer())) -> non_neg_integer().
 
 get_min_dice_throws(Moves) ->
     N = length(Moves),
@@ -33,9 +41,13 @@ get_min_dice_throws(Moves) ->
     Visited1 = set_visited(Visited, 0),
     bfs(Moves, Visited1, Queue, N).
 
+-spec set_visited(list(boolean()), pos_integer()) -> list(boolean()).
+
 set_visited(Visited, Index) ->
     Updated = lists:sublist(Visited, 1, Index) ++ [true] ++ lists:sublist(Visited, Index + 2, length(Visited) - Index - 1),
     Updated.
+
+-spec bfs(list(integer()), list(boolean()), list(#query_entry{}), pos_integer()) -> non_neg_integer().
 
 bfs(Moves, Visited, [#query_entry{v = V, dist = Dist} | Tail], N) ->
     case V == N-1 of
@@ -50,6 +62,8 @@ bfs(Moves, Visited, [#query_entry{v = V, dist = Dist} | Tail], N) ->
             end
 
     end.
+
+-spec explore_neighbors(pos_integer(), non_neg_integer(), list(boolean()), list(integer()), pos_integer(), list(#query_entry{})) -> {list(boolean()), list(#query_entry{})}.
 
 explore_neighbors(V, Dist, Visited, Moves, N, Tail) ->
     lists:foldl(
