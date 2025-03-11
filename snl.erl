@@ -1,17 +1,7 @@
 -module(snl).
--export([main/0]).
+-export([generate_moves/3, get_min_dice_throws/1]).
 
 -record(query_entry, {v :: pos_integer(), dist :: non_neg_integer()}).
-
--spec main() -> ok.
-
-main() ->
-    N = 100,
-    Ladders = [{2, 38}, {7, 14}, {8, 31}, {15, 26}, {21, 42}, {28, 84}, {36, 44}, {51, 67}, {71, 91}, {78, 98}],
-    Snakes = [{16, 6}, {46, 25}, {49, 11}, {62, 19}, {64, 60}, {74, 53}, {89, 68}, {92, 88}, {95, 75}, {99, 80}],
-    Moves = generate_moves(N, Ladders, Snakes),
-    MinThrows = get_min_dice_throws(Moves),
-    io:format("Minimum dice throws required is: ~p~n", [MinThrows]).
 
 -spec generate_moves(pos_integer(), [{pos_integer(), pos_integer()}], [{pos_integer(), pos_integer()}]) -> list(integer()).
 
@@ -37,8 +27,12 @@ update_list(List, Index, Value) ->
 get_min_dice_throws(Moves) ->
     N = length(Moves),
     Visited = lists:duplicate(N, false),
-    Queue = [#query_entry{v = 0, dist = 0}],
-    Visited1 = set_visited(Visited, 0),
+    StartV = case lists:nth(1, Moves) of
+        -1 -> 0;  
+        X -> X  
+    end,
+    Queue = [#query_entry{v = StartV, dist = 0}],
+    Visited1 = set_visited(Visited, StartV),
     bfs(Moves, Visited1, Queue, N).
 
 -spec set_visited(list(boolean()), pos_integer()) -> list(boolean()).
