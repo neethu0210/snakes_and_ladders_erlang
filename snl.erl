@@ -38,8 +38,7 @@ get_min_dice_throws(Moves) ->
 -spec set_visited(list(boolean()), pos_integer()) -> list(boolean()).
 
 set_visited(Visited, Index) ->
-    Updated = lists:sublist(Visited, 1, Index) ++ [true] ++ lists:sublist(Visited, Index + 2, length(Visited) - Index - 1),
-    Updated.
+    update_list(Visited, Index, true).
 
 -spec bfs(list(integer()), list(boolean()), list(#query_entry{}), pos_integer()) -> non_neg_integer().
 
