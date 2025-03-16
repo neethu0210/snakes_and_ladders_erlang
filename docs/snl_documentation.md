@@ -186,11 +186,11 @@ explore_neighbors(V, Dist, Visited, Moves, N, Tail) ->
 - **Return the updated queue and visited list** to *bfs/4*.
 
 ## **Summary**
-1. *generate_moves/3*: Creates a board representation.
-2. *update_list/3*: Modifies the board list.
-3. *get_min_dice_throws/1*: Finds the shortest path using BFS.
-4. *set_visited/2*: Marks positions as visited.
-5. *bfs/4*: Implements BFS to find the solution.
-6. *explore_neighbors/6*: Determines possible moves.  
+1. ***generate_moves/3***: Creates a board representation.
+2. ***update_list/3***: Modifies the board list.
+3. ***get_min_dice_throws/1***: Finds the shortest path using BFS.
+4. ***set_visited/2***: Marks positions as visited.
+5. ***bfs/4***: Implements BFS to find the solution.
+6. ***explore_neighbors/6***: Determines possible moves.  
 
 This approach efficiently finds the shortest path in the game using **BFS traversal**.
